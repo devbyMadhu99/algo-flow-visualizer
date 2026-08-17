@@ -36,8 +36,8 @@ function* bubbleSort(input: number[]): Generator<SortStep> {
     for (let j = 0; j < a.length - i - 1; j++) {
       c.comparisons++;
       yield frame(a, c, { comparing: [j, j + 1], sorted: [...sorted] });
-      if (a[j] > a[j + 1]) {
-        [a[j], a[j + 1]] = [a[j + 1], a[j]];
+      if (a[j]! > a[j + 1]!) {
+        [a[j], a[j + 1]] = [a[j + 1]!, a[j]!];
         c.swaps++;
         swappedThisPass = true;
         yield frame(a, c, { swapping: [j, j + 1], sorted: [...sorted] });
@@ -65,10 +65,10 @@ function* selectionSort(input: number[]): Generator<SortStep> {
         special: [min],
         sorted: [...sorted],
       });
-      if (a[j] < a[min]) min = j;
+      if (a[j]! < a[min]!) min = j;
     }
     if (min !== i) {
-      [a[i], a[min]] = [a[min], a[i]];
+      [a[i], a[min]] = [a[min]!, a[i]!];
       c.swaps++;
       yield frame(a, c, { swapping: [i, min], sorted: [...sorted] });
     }
@@ -83,7 +83,7 @@ function* insertionSort(input: number[]): Generator<SortStep> {
   const c: Counters = { comparisons: 0, swaps: 0 };
 
   for (let i = 1; i < a.length; i++) {
-    const key = a[i];
+    const key = a[i]!;
     let j = i - 1;
     const sortedPrefix = () => Array.from({ length: i }, (_, k) => k);
     yield frame(a, c, { special: [i], sorted: sortedPrefix() });
@@ -92,8 +92,8 @@ function* insertionSort(input: number[]): Generator<SortStep> {
     while (j >= 0) {
       c.comparisons++;
       yield frame(a, c, { comparing: [j], special: [i], sorted: sortedPrefix() });
-      if (a[j] <= key) break;
-      a[j + 1] = a[j];
+      if (a[j]! <= key) break;
+      a[j + 1] = a[j]!;
       c.swaps++;
       yield frame(a, c, { swapping: [j, j + 1], sorted: sortedPrefix() });
       j--;
@@ -120,19 +120,19 @@ function* mergeSort(input: number[]): Generator<SortStep> {
     while (i < left.length && j < right.length) {
       c.comparisons++;
       yield frame(a, c, { comparing: [lo + i, mid + 1 + j], special: range });
-      a[k] = left[i] <= right[j] ? left[i++] : right[j++];
+      a[k] = left[i]! <= right[j]! ? left[i++]! : right[j++]!;
       c.swaps++;
       yield frame(a, c, { swapping: [k], special: range });
       k++;
     }
     while (i < left.length) {
-      a[k] = left[i++];
+      a[k] = left[i++]!;
       c.swaps++;
       yield frame(a, c, { swapping: [k], special: range });
       k++;
     }
     while (j < right.length) {
-      a[k] = right[j++];
+      a[k] = right[j++]!;
       c.swaps++;
       yield frame(a, c, { swapping: [k], special: range });
       k++;
@@ -158,15 +158,15 @@ function* quickSort(input: number[]): Generator<SortStep> {
   const sorted: number[] = [];
 
   function* partition(lo: number, hi: number): Generator<SortStep, number> {
-    const pivot = a[hi]; // Lomuto partition scheme, last element as pivot.
+    const pivot = a[hi]!; // Lomuto partition scheme, last element as pivot.
     let i = lo - 1;
     for (let j = lo; j < hi; j++) {
       c.comparisons++;
       yield frame(a, c, { comparing: [j], special: [hi], sorted: [...sorted] });
-      if (a[j] < pivot) {
+      if (a[j]! < pivot) {
         i++;
         if (i !== j) {
-          [a[i], a[j]] = [a[j], a[i]];
+          [a[i], a[j]] = [a[j]!, a[i]!];
           c.swaps++;
           yield frame(a, c, {
             swapping: [i, j],
@@ -177,7 +177,7 @@ function* quickSort(input: number[]): Generator<SortStep> {
       }
     }
     if (i + 1 !== hi) {
-      [a[i + 1], a[hi]] = [a[hi], a[i + 1]];
+      [a[i + 1], a[hi]] = [a[hi]!, a[i + 1]!];
       c.swaps++;
       yield frame(a, c, { swapping: [i + 1, hi], sorted: [...sorted] });
     }
