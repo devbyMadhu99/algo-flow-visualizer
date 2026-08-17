@@ -18,7 +18,7 @@ export function sleep(ms: number): Promise<void> {
 
 /** Speed slider (1 = slow … 100 = fast) mapped to a per-frame delay in ms. */
 export function speedToDelay(speed: number): number {
-  return Math.round(2 + (100 - speed) ** 1.5 / 55);
+  return Math.round(2 + (100 - speed) ** 1.5 / 14);
 }
 
 export function speedLabel(speed: number): string {
