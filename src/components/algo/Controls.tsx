@@ -28,104 +28,140 @@ export interface ControlsProps {
   onReset: () => void;
 }
 
-export function Controls(p: ControlsProps) {
-  const running = p.status === "running";
-  const paused = p.status === "paused";
-  const busy = running || paused;
+export function Controls({
+  algorithm,
+  onAlgorithmChange,
+  size,
+  onSizeChange,
+  speed,
+  onSpeedChange,
+  status,
+  hasArray,
+  onGenerate,
+  onStart,
+  onPauseToggle,
+  onReset,
+}: ControlsProps) {
+  const isRunning = status === "running";
+  const isPaused = status === "paused";
+  const isBusy = isRunning || isPaused;
 
   return (
     <div className="glass-card grid gap-6 p-5 sm:p-6">
+      {/* Settings */}
       <div className="grid gap-6 md:grid-cols-3">
-        {/* Algorithm selector */}
+        {/* Algorithm */}
         <div className="grid gap-2">
-          <Label htmlFor="algorithm">Algorithm</Label>
+          <Label htmlFor="algorithm">Sorting Algorithm</Label>
+
           <Select
-            value={p.algorithm}
-            onValueChange={(v) => p.onAlgorithmChange(v as AlgorithmKey)}
-            disabled={busy}
+            value={algorithm}
+            onValueChange={(value) =>
+              onAlgorithmChange(value as AlgorithmKey)
+            }
+            disabled={isBusy}
           >
             <SelectTrigger id="algorithm" className="w-full">
-              <SelectValue placeholder="Select algorithm" />
+              <SelectValue placeholder="Choose an algorithm" />
             </SelectTrigger>
+
             <SelectContent>
-              {ALGORITHMS.map((a) => (
-                <SelectItem key={a.key} value={a.key}>
-                  {a.name}
+              {ALGORITHMS.map((item) => (
+                <SelectItem key={item.key} value={item.key}>
+                  {item.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
 
-        {/* Array size */}
+        {/* Array Size */}
         <div className="grid gap-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="size">Array Size</Label>
-            <span className="chip">{p.size} bars</span>
+
+            <span className="chip">
+              {size} elements
+            </span>
           </div>
+
           <Slider
             id="size"
             min={10}
             max={100}
             step={1}
-            value={[p.size]}
-            disabled={busy}
-            onValueChange={([v]) => p.onSizeChange(v ?? p.size)}
+            value={[size]}
+            disabled={isBusy}
+            onValueChange={([value]) =>
+              onSizeChange(value ?? size)
+            }
             className="mt-2"
           />
         </div>
 
-        {/* Speed */}
+        {/* Animation Speed */}
         <div className="grid gap-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="speed">Speed</Label>
+            <Label htmlFor="speed">Animation Speed</Label>
+
             <span className="chip">
-              {speedLabel(p.speed)} · {speedToDelay(p.speed)} ms
+              {speedLabel(speed)}
             </span>
           </div>
+
           <Slider
             id="speed"
             min={1}
             max={100}
             step={1}
-            value={[p.speed]}
-            onValueChange={([v]) => p.onSpeedChange(v ?? p.speed)}
+            value={[speed]}
+            onValueChange={([value]) =>
+              onSpeedChange(value ?? speed)
+            }
             className="mt-2"
           />
         </div>
       </div>
 
+      {/* Action Buttons */}
       <div className="flex flex-wrap gap-3">
         <Button
           variant="outline"
-          onClick={p.onGenerate}
-          disabled={busy}
-          title="Create a new random array"
+          onClick={onGenerate}
+          disabled={isBusy}
+          title="Generate a new random array"
         >
-          <Shuffle /> Generate Array
+          <Shuffle />
+          Generate Array
         </Button>
+
         <Button
           variant="hero"
-          onClick={p.onStart}
-          disabled={!p.hasArray || busy || p.status === "done"}
-          title="Run the selected algorithm"
+          onClick={onStart}
+          disabled={!hasArray || isBusy || status === "done"}
+          title="Start sorting visualization"
         >
-          <Play /> {running ? "Sorting…" : "Start Sorting"}
+          <Play />
+          {isRunning ? "Sorting..." : "Start Sorting"}
         </Button>
+
         <Button
           variant="secondary"
-          onClick={p.onPauseToggle}
-          disabled={!busy}
-          title={paused ? "Resume the animation" : "Pause the animation"}
+          onClick={onPauseToggle}
+          disabled={!isBusy}
+          title={isPaused ? "Resume sorting" : "Pause sorting"}
         >
-          {paused ? <Play /> : <Pause />} {paused ? "Resume" : "Pause"}
+          {isPaused ? <Play /> : <Pause />}
+          {isPaused ? "Resume" : "Pause"}
         </Button>
+
         <Button
           variant="ghost"
-          onClick={p.onReset}
-          title="Stop and restore an unsorted array"
+          onClick={onReset}
+          title="Reset the visualization"
         >
-          <RotateCcw /> Reset
+          <RotateCcw />
+          Reset
         </Button>
       </div>
     </div>

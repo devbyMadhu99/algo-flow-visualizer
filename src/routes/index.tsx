@@ -13,17 +13,22 @@ import { ALGO_MAP } from "@/lib/sorting/info";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AlgoVisualizer — Interactive Sorting Algorithm Visualizer" },
+      {
+        title: "SortingVisualizer — Interactive Sorting Algorithm Visualizer",
+      },
       {
         name: "description",
         content:
-          "Watch bubble, selection, insertion, merge and quick sort run step by step with live comparison, swap and timing statistics.",
+          "Explore Bubble, Selection, Insertion, Merge and Quick Sort through interactive step-by-step visualizations.",
       },
-      { property: "og:title", content: "AlgoVisualizer — Sorting Algorithm Visualizer" },
+      {
+        property: "og:title",
+        content: "SortingVisualizer — Sorting Algorithm Visualizer",
+      },
       {
         property: "og:description",
         content:
-          "Interactive, animated sorting algorithm visualizations with live stats and complexity references.",
+          "Interactive sorting algorithm visualizations with live comparisons, swaps and complexity information.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -46,9 +51,15 @@ function SectionHeading({
       <span className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg border border-border/70 bg-card/50">
         <Icon className="size-4 text-primary" />
       </span>
+
       <div>
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">
+          {title}
+        </h2>
+
+        <p className="text-sm text-muted-foreground">
+          {subtitle}
+        </p>
       </div>
     </div>
   );
@@ -63,19 +74,30 @@ function Index() {
       <Header />
 
       <main className="mx-auto max-w-7xl space-y-16 px-4 py-10 sm:px-6 sm:py-14">
-        {/* ------------------------------------------------------- Visualizer */}
+
+        {/* Visualizer */}
         <section id="visualizer" className="scroll-mt-28 space-y-6">
+
           <div className="max-w-2xl space-y-3">
+
             <span className="chip">
-              <Sparkles className="size-3" /> Real algorithms, step by step
+              <Sparkles className="size-3" />
+              Interactive Sorting Lab
             </span>
+
             <h2 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-              See <span className="text-gradient">sorting algorithms</span> think
+              <span className="text-gradient">
+                Visualize Sorting
+              </span>{" "}
+              Algorithms
             </h2>
+
             <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Every frame below comes from a real JavaScript implementation — compare bars, watch
-              swaps happen and track the cost in comparisons, swaps and milliseconds.
+              Experiment with different sorting algorithms, watch every
+              comparison and swap, and understand how data gets organized
+              step by step.
             </p>
+
           </div>
 
           <Controls
@@ -94,15 +116,26 @@ function Index() {
           />
 
           <div className="glass-card space-y-4 p-4 sm:p-6">
+
             <div className="flex flex-wrap items-center justify-between gap-3">
+
               <h3 className="text-sm font-medium text-muted-foreground">
                 {info.name}
+
                 {v.status === "running" && " · sorting…"}
+
                 {v.status === "paused" && " · paused"}
               </h3>
+
               <Legend />
+
             </div>
-            <BarChart step={v.step} finished={v.status === "done"} />
+
+            <BarChart
+              step={v.step}
+              finished={v.status === "done"}
+            />
+
           </div>
 
           <Stats
@@ -111,59 +144,83 @@ function Index() {
             elapsed={v.elapsed}
             finished={v.status === "done"}
           />
+
         </section>
 
-        {/* ------------------------------------------------------- Algorithms */}
+        {/* Algorithms */}
         <section id="algorithms" className="scroll-mt-28 space-y-6">
+
           <SectionHeading
             icon={Activity}
             title="Algorithm Information"
-            subtitle="Details for the algorithm currently selected above."
+            subtitle="Explore how the selected sorting algorithm works."
           />
+
           <AlgorithmInfoPanel info={info} />
 
           <h3 className="pt-2 text-lg font-semibold text-foreground">
             Algorithm Complexity Comparison
           </h3>
+
           <ComparisonTable active={v.algorithm} />
 
-          <h3 className="pt-2 text-lg font-semibold text-foreground">Learn Sorting Algorithms</h3>
+          <h3 className="pt-2 text-lg font-semibold text-foreground">
+            Learn Sorting Algorithms
+          </h3>
+
           <LearnSection />
+
         </section>
 
-        {/* ------------------------------------------------------------ About */}
+        {/* About */}
         <section id="about" className="scroll-mt-28 space-y-6">
+
           <SectionHeading
             icon={Info}
-            title="About AlgoVisualizer"
-            subtitle="Why this tool exists."
+            title="About SortingVisualizer"
+            subtitle="Learn sorting through interactive visualization."
           />
+
           <div className="glass-card grid gap-4 p-5 sm:p-6">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              AlgoVisualizer is an interactive learning tool designed to help students understand
-              sorting algorithms through real-time visualization. Instead of reading pseudocode, you
-              watch the array change one operation at a time.
+
+            <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+              SortingVisualizer is an interactive learning tool that makes
+              sorting algorithms easier to understand through real-time
+              visualization. Watch comparisons, swaps and algorithm
+              decisions happen step by step.
             </p>
+
             <ul className="grid gap-2 text-sm text-muted-foreground sm:grid-cols-2">
+
               {[
                 "How comparisons drive every decision",
                 "When and why elements get swapped",
-                "How time complexity shows up in practice",
-                "How each algorithm behaves on different data",
+                "How time complexity affects performance",
+                "How different algorithms behave on different data",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-2">
+
+                <li
+                  key={item}
+                  className="flex items-start gap-2"
+                >
                   <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
                   {item}
                 </li>
+
               ))}
+
             </ul>
+
           </div>
+
         </section>
+
       </main>
 
       <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground">
-        ⚡ AlgoVisualizer — built with React, TypeScript and Tailwind CSS.
+        ⚡ SortingVisualizer — built with React, TypeScript and Tailwind CSS.
       </footer>
+
     </div>
   );
 }

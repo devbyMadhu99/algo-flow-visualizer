@@ -2,20 +2,41 @@ import { ALGORITHMS } from "@/lib/sorting/info";
 
 export function LearnSection() {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      {ALGORITHMS.map((a) => (
+    <div className="grid gap-5 md:grid-cols-2">
+      {ALGORITHMS.map((algorithm) => (
         <article
-          key={a.key}
-          className="glass-card p-5 transition-transform duration-200 hover:-translate-y-1"
+          key={algorithm.key}
+          className="glass-card group p-5 transition-all duration-200 hover:-translate-y-1"
         >
-          <div className="flex items-baseline justify-between gap-3">
-            <h3 className="font-semibold text-foreground">{a.name}</h3>
-            <span className="chip font-mono">{a.average}</span>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h3 className="font-semibold text-foreground">
+                {algorithm.name}
+              </h3>
+
+              <p className="mt-1 text-xs text-muted-foreground">
+                Average time complexity
+              </p>
+            </div>
+
+            <span className="chip shrink-0 font-mono">
+              {algorithm.average}
+            </span>
           </div>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.learn}</p>
-          <pre className="mt-3 overflow-x-auto rounded-lg border border-border/70 bg-card/50 px-3 py-2 font-mono text-xs text-primary">
-            {a.example}
-          </pre>
+
+          <p className="mt-4 text-sm leading-7 text-muted-foreground">
+            {algorithm.learn}
+          </p>
+
+          <div className="mt-4">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Example
+            </p>
+
+            <pre className="overflow-x-auto rounded-xl border border-border/70 bg-card/50 px-4 py-3 font-mono text-xs leading-6 text-primary">
+              {algorithm.example}
+            </pre>
+          </div>
         </article>
       ))}
     </div>
